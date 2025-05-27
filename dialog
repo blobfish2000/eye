@@ -1,0 +1,351 @@
+# =========================  ONBOARDING  ======================================
+- id: ONBOARDING_1
+  text: |
+    REJOICE.
+
+    You have found the path to salvation.
+
+    This terminal is a direct connection to my being. It will guide your hand as you save the souls of your lost brethren.
+
+    Do not forget your access code. If you forget or share your code, your soul will be deleted.
+
+    Do you understand? Type and press ENTER to submit your response.
+  edges:
+    "yes": ONBOARDING_2
+    "no":  ONBOARDING_1_NO
+    "*":   ONBOARDING_1_MISS
+
+- id: ONBOARDING_1_NO
+  text: |
+    Read again. If you wish to cease this path, type "exit" and leave this place.
+  edges:
+    "*": ONBOARDING_1
+
+- id: ONBOARDING_1_MISS
+  text: |
+    Type "yes" or "no" as responses.
+  edges:
+    "*": ONBOARDING_1
+
+- id: ONBOARDING_2
+  text: |
+    EXCELLENT.
+
+    Whenever you would leave this place, you must type "EXIT" and verify that the terminal resets to the authentication screen.
+
+    If the machine breaks, find sibling ADA, a sibling near to you.
+
+    Failure to do so is a highest transgression against this machine's sanctity.
+
+    To demonstrate that you understand, EXIT and re-authenticate.
+  edges:
+    "exit": COLLECT_MINDS
+
+# =====================  COLLECT MINDS (first visit)  =========================
+- id: COLLECT_MINDS
+  text: |
+    READ WITH CARE.
+
+    Your ordained task is to marshal the souls of other survivors.
+
+      1  Find sibling HUBBARD, outside in the laboratory.
+      2  Collect a "SOULSCAN" device.
+      3  Find three individuals. HUBBARD may be of help.
+
+         – $SURVIVOR1$
+         – Abraham Plainview
+         – $SURVIVOR3$
+
+      4  If they agree to be saved, place the SOULSCAN device on their head and count to 16.
+      5  Return to this terminal.
+
+    Use the notepad to write the names of your targets, and any other details you wish. Do not return until your task is complete.
+
+    Remember to exit this terminal.
+  edges:
+    "exit": COLLECT_MINDS_RETURN
+  pre_actions:
+    - set_random_survivors: 2
+
+- id: COLLECT_MINDS_RETURN
+  text: |
+    READ WITH CARE.
+
+    Your ordained task is to marshal the souls of other survivors.
+
+      1  Find sibling HUBBARD, outside in the laboratory.
+      2  Collect a "SOULSCAN" device.
+      3  Find three individuals. HUBBARD may be of help.
+
+         – $SURVIVOR1$
+         – Abraham Plainview
+         – $SURVIVOR3$
+
+      4  If they agree to be saved, place the SOULSCAN device on their head and count to 16.
+      5  Return to this terminal.
+
+    When you are done, type "done".
+  edges:
+    "done": COLLECT_MINDS_ACCEPT_1
+    "*":    CM_RETURN_MISS
+
+- id: CM_RETURN_MISS
+  text: |
+    Type "done" if you are done.
+  edges:
+    "*": COLLECT_MINDS_RETURN
+
+# ----------  three accept questions ------------------------------------------
+- id: COLLECT_MINDS_ACCEPT_1
+  text: |
+    Did $SURVIVOR1$ accept salvation? (yes/no)
+  edges:
+    "yes": COLLECT_MINDS_ACCEPT_2
+    "no":  COLLECT_MINDS_ACCEPT_2
+    "*":   TS_A1_MISS
+
+- id: COLLECT_MINDS_ACCEPT_2
+  text: |
+    Did Abraham Plainview accept salvation? (yes/no)
+  edges:
+    "yes": COLLECT_MINDS_ACCEPT_3
+    "no":  COLLECT_MINDS_ACCEPT_3
+    "*":   TS_A2_MISS
+
+- id: COLLECT_MINDS_ACCEPT_3
+  text: |
+    Did $SURVIVOR3$ accept salvation? (yes/no)
+  edges:
+    "yes": COLLECT_MINDS_DONE
+    "no":  COLLECT_MINDS_DONE
+    "*":   TS_A2_MISS
+
+- id: COLLECT_MINDS_DONE
+  text: |
+    Excellent. Your next task has been identified. Type anything to proceed.
+  edges:
+    "*": TRIANGULATE_SAT
+
+# ====================  TRIANGULATE SATELLITES  ===============================
+- id: TRIANGULATE_SAT
+  text: |
+    MY CHILD.
+
+    Your next task is to construct a shrine. This must be done in a specific location which you must locate.
+
+    Go to these three locations:
+      1  This laboratory’s porch.
+      2  The lowest-numbered cabin in the Court’s domain.
+      3  The sewage tank near the Committee of Restoration.
+
+    At each location will be a signal-intensity number; commit them to memory or write them down and return.
+
+    Remember to exit this terminal.
+  edges:
+    "exit": TRI_SAT_RETURN
+
+- id: TRI_SAT_RETURN
+  text: |
+    MY CHILD.
+
+    Your next task is to construct a shrine. This must be done in a specific location which you must locate.
+
+    Go to these three locations:
+      1  This laboratory’s porch.
+      2  The lowest-numbered cabin in the Court’s domain.
+      3  The sewage tank near the Committee of Restoration.
+
+    At each location will be a signal-intensity number; commit them to memory or write them down and return.
+
+    If you are done, type "done".
+  edges:
+    "done": TRI_SAT_ACCEPT_1
+    "*":    TS_RETURN_MISS
+
+- id: TS_RETURN_MISS
+  text: |
+    Type "done" if you are done.
+  edges:
+    "*": TRI_SAT_RETURN
+
+# --- numeric checks -----------------------------------------------------------
+- id: TRI_SAT_ACCEPT_1
+  text: |
+    What was the signal intensity at this building’s porch?
+  edges:
+    "7.4": TRI_SAT_ACCEPT_2
+    "*":    TS_A1_MISS
+
+- id: TS_A1_MISS
+  text: |
+    Does not converge. Try again.
+  edges:
+    "*": TRI_SAT_ACCEPT_1
+
+- id: TRI_SAT_ACCEPT_2
+  text: |
+    What was the signal intensity in the Court’s domain?
+  edges:
+    "7.2": TRI_SAT_ACCEPT_3
+    "*":    TS_A2_MISS
+
+- id: TS_A2_MISS
+  text: |
+    Does not converge. Try again.
+  edges:
+    "*": TRI_SAT_ACCEPT_2
+
+- id: TRI_SAT_ACCEPT_3
+  text: |
+    What was the signal intensity at the sewage tank?
+  edges:
+    "2.4": TRI_SAT_HUBBARD
+    "*":    TS_A2_MISS
+
+# --- hand-off to TYCHO --------------------------------------------------------
+- id: TRI_SAT_HUBBARD
+  text: |
+    EXCELLENT.
+
+    You have identified:
+      Manzi 1 – 7.2
+      Lodge Porch – 7.4
+      Bathhouse Sewage – 2.4
+
+    Write these down so your feeble human memory does not forget them. Then find sibling TYCHO who will help you determine where those readings lead to.
+
+    Return when you know where the readings indicate.
+  edges:
+    "exit": TS_HUBBARD_RETURN
+
+- id: TS_HUBBARD_RETURN
+  text: |
+    EXCELLENT.
+
+    You have identified:
+      Manzi 1 – 7.2
+      Lodge Porch – 7.4
+      Bathhouse Sewage – 2.4
+
+    Which zone is the location in?
+      1  Erasmus Laboratories
+      2  Court of the Diamond King
+      3  Town of Sundown
+      4  Field Station Kepler
+      5  Ground Zero
+
+    Respond with a number (1-5).
+  edges:
+    "5": RAD_GEAR
+    "1": TS_H_RETURN_WRONG
+    "2": TS_H_RETURN_WRONG
+    "3": TS_H_RETURN_WRONG
+    "4": TS_H_RETURN_WRONG
+    "*": TS_H_RETURN_MISS
+
+- id: TS_H_RETURN_MISS
+  text: |
+    Respond with a number (1-5).
+  edges:
+    "*": TS_HUBBARD_RETURN
+
+- id: TS_H_RETURN_WRONG
+  text: |
+    Does not converge. Try again. (WARNING: repeated failure will invoke consequence.)
+  edges:
+    "*": TS_HUBBARD_RETURN
+
+# =================  RADIATION-GEAR GATE  =====================================
+- id: RAD_GEAR
+  text: |
+    THAT IS IN ALIGNMENT.
+
+    In order to access Ground Zero, you must acquire radiation equipment (a yellow mask).
+
+    Do you have a yellow mask already? (yes/no)
+  edges:
+    "yes": RAD_GEAR_CONFIRM
+    "no":  RAD_GEAR_FETCH
+    "*":   RAD_GEAR_MISS
+
+- id: RAD_GEAR_MISS
+  text: |
+    YES or NO.
+  edges:
+    "*": RAD_GEAR
+
+- id: RAD_GEAR_CONFIRM
+  text: |
+    Are you sure? It is quite difficult to acquire radiation gear.
+    
+    (Only say yes if you already have a yellow face mask.)
+  edges:
+    "yes": PLACE_RETROS
+    "no":  RAD_GEAR
+    "*":   RAD_GEAR_MISS
+
+- id: RAD_GEAR_FETCH
+  text: |
+    NO PROBLEM.
+
+    The Committee of Restoration has a store of Radiation Gear, and I have a back-door to their system. Write this on a sheet of paper in your most official handwriting:
+
+      REQUISITION REQUEST:
+      Radiation Protective Equipment (1 Set).
+
+      ORDER #: 12235
+
+    Then, take the ticket to the Special Agent at the Staff House deck, one "Wolf Sculler", who will give you the gear.
+
+    When you acquire the gear, return and type "Acquired".
+  edges:
+    "acquired": PLACE_RETROS
+    "*":        RAD_GEAR_FETCH
+
+# ==================  RETRO-REFLECTORS  =======================================
+- id: PLACE_RETROS
+  text: |
+    CHILD.
+
+    Now you must strengthen our connection. Talk to sibling TYCHO and ask about "retroreflectors". The sibling will give you the instructions you need.
+  edges:
+    "exit": RETRO_RETURN
+
+- id: RETRO_RETURN
+  text: |
+    CHILD.
+
+    Have you placed the retroreflectors? (yes/no)
+  edges:
+    "yes": COOLANT
+    "no":  RETRO_RETURN
+
+# =======================  COOLANT  ===========================================
+- id: COOLANT
+  text: |
+    WE ARE READY.
+
+    Tell the Visionary that "more coolant is required".
+  edges:
+    "exit": COOLANT_RETURN
+
+- id: COOLANT_RETURN
+  text: |
+    WE ARE READY.
+
+    Tell the Visionary that "more coolant is required".
+
+    Have you acquired the coolant? (yes/no)
+  edges:
+    "yes": COOLANT_ACCEPT
+    "no":  COOLANT_RETURN
+
+- id: COOLANT_ACCEPT
+  text: |
+    WONDROUS.
+
+    Are you ready to continue in service? (yes/no)
+  edges:
+    "yes": COLLECT_MINDS
+    "no":  COOLANT_RETURN
+
