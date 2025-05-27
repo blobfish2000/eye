@@ -201,24 +201,17 @@ def execute_post_actions(actions: List[dict], player_data: dict):
 
 def pick_random_survivors(n: int) -> Tuple[str, str]:
     pool = [
-        "Erica Pike",
-        "Jonas Trent",
-        "Marisol Vega",
-        "Elias Krohn",
-        "Tanya Holt",
-        "Dexter Shaw",
-        "Bianca Frost",
-        "Howard Lin",
-        "Raj Patel",
-        "Helena Marks",
-        "Quinn Beal",
-        "Xavier Ro",
-        "Sasha Wynne",
-        "Omar Cutler",
-        "Yuri Belov",
-        "Lena Ortiz",
-        "Igor Molin",
-        "Piper Jules",
+        "Donald Rumsfeld",
+        "Dr. Marissa Shelley",
+        "Jerimiah Doe",
+        "S.A. Wolf Sculler",
+        "Lt. Martin Minute",
+        "William Kidd",
+        "Chip Doyle",
+        "Wellkeeper Genn",
+        "Greenthumb Rial",
+        "Citizen Cane",
+        "Driver McClusky",
     ]
     return tuple(random.sample(pool, k=n))  # type: ignore
 
