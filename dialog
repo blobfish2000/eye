@@ -199,7 +199,7 @@
   text: |
     What was the signal intensity at the sewage tank?
   edges:
-    "2.4": TRI_SAT_HUBBARD
+    "2.3": TRI_SAT_HUBBARD
     "*":    TS_A2_MISS
 
 # --- hand-off to TYCHO --------------------------------------------------------
@@ -210,7 +210,7 @@
     You have identified:
       Manzi 1 – 7.2
       Lodge Porch – 7.4
-      Bathhouse Sewage – 2.4
+      Bathhouse Sewage – 2.3
 
     Write these down so your feeble human memory does not forget them. Then find sibling TYCHO who will help you determine where those readings lead to.
 
@@ -225,7 +225,7 @@
     You have identified:
       Manzi 1 – 7.2
       Lodge Porch – 7.4
-      Bathhouse Sewage – 2.4
+      Bathhouse Sewage – 2.3
 
     Which zone is the location in?
       1  Erasmus Laboratories

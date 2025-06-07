@@ -41,12 +41,23 @@ from rich.console import Console
 from rich.panel import Panel
 from rich.prompt import Prompt
 from rich.text import Text
+from rich.padding import Padding
 
 console = Console()
 WRAP_WIDTH = 80
 IDLE_TIMEOUT = 120  # seconds
+PADDING = 4
 DB_FILE = "state.db"
 ERROR_LOG = "error.log"
+QUIT_MSG = "GETMEOUT"
+
+
+################################################################################
+#                                Print Padding                                 #
+################################################################################
+
+def pad_print(message: str, pad: int = PADDING):
+    console.print(Padding(message, (0,pad)))
 
 ################################################################################
 #                               Logging helper                                 #
@@ -72,7 +83,7 @@ def log_error(message: str, exc: Exception | None = None, /, *, to_console: bool
     with open(ERROR_LOG, "a", encoding="utf-8") as fh:
         fh.write(blob)
     if to_console:
-        console.print(f"[red]{blob}[/red]")
+        pad_print(f"[red]{blob}[/red]")
 
 ################################################################################
 #                                 Data Model                                   #
@@ -233,17 +244,17 @@ class Engine:
     def authenticate(self):
         while True:
             self.clear()
-            console.print(Panel(Text("EYE UPLINK – ENTER PASSCODE", style="bold green")))
-            code = Prompt.ask("PASSCODE").strip()
+            pad_print(Panel(Text("EYE UPLINK – ENTER PASSCODE", style="bold green")))
+            code = Prompt.ask(PADDING * " " + "PASSCODE").strip()
             if code in self.passcodes:
                 self.player_code = code
                 node, data = self.db.get_or_create_player(code, "ONBOARDING_1")
                 self.player_node = node
                 self.player_data = data or {}
                 break
-            if code == "GETMEOUT":
+            if code == QUIT_MSG:
                 self.shutdown()
-            console.print("[red]INVALID PASSCODE[/red]")
+            pad_print("[red]INVALID PASSCODE[/red]")
             time.sleep(1.5)
 
     # --------------------------- main loop -----------------------------------
@@ -268,7 +279,7 @@ class Engine:
                     continue
 
                 if not target:
-                    console.print("[red]DOES NOT CONVERGE. TRY AGAIN.[/red]")
+                    pad_print("[red]DOES NOT CONVERGE. TRY AGAIN.[/red]")
                     time.sleep(1.2)
                     continue
 
@@ -276,7 +287,7 @@ class Engine:
                 self.player_node = target
                 self.db.save_player(self.player_code, self.player_node, self.player_data)
         except KeyboardInterrupt:
-            console.print("[red]![/red]")
+            pad_print("[red]![/red]")
         except Exception as e:
             with open(ERROR_LOG, "a", encoding="utf-8") as fh:
                 fh.write(f"{time.asctime()}: {e}\n")
@@ -286,7 +297,7 @@ class Engine:
     def render(self, node: Node):
         self.clear()
         text = self.substitute_placeholders(node.text)
-        console.print(text)
+        pad_print(text)
 
     def substitute_placeholders(self, s: str) -> str:
         out = s
@@ -303,7 +314,7 @@ class Engine:
                 return ""  # will prompt for auth again
             if console.is_terminal:
                 try:
-                    return console.input("\n> ")
+                    return console.input("\n" + PADDING * " " + "> ")
                 except (EOFError, KeyboardInterrupt):
                     self.logout()
             else:
@@ -315,7 +326,7 @@ class Engine:
         self.player_code = None
         self.player_node = None
         self.player_data = {}
-        console.print("\n[cyan]SESSION TERMINATED. REAUTHENTICATE.[/cyan]")
+        pad_print("\n[cyan]SESSION TERMINATED. REAUTHENTICATE.[/cyan]")
         time.sleep(1.5)
 
     @staticmethod
@@ -324,7 +335,7 @@ class Engine:
 
     @staticmethod
     def shutdown():
-        console.print("\n[bright_yellow]SHUTTING DOWN…[/bright_yellow]")
+        pad_print("\n[bright_yellow]SHUTTING DOWN…[/bright_yellow]")
         sys.exit(0)
 
 ################################################################################
